@@ -35,6 +35,24 @@ feeds:
   - url: https://www.loudersound.com/feed
     name: Metal Hammer
     theme: Heavy Metal
+  - url: https://www.nocleansinging.com/feed/
+    name: No Clean Singing
+    theme: Heavy Metal
+  - url: https://www.decibelmagazine.com/feed/
+    name: Decibel Magazine
+    theme: Heavy Metal
+  - url: https://www.heavyblogisheavy.com/feed
+    name: Heavy Blog Is Heavy
+    theme: Heavy Metal
+  - url: https://metalstorm.net/rss/news.xml
+    name: Metal Storm
+    theme: Heavy Metal
+  - url: https://thequietus.com/feed
+    name: The Quietus
+    theme: Heavy Metal
+  - url: https://ninecircles.co/feed/
+    name: Nine Circles
+    theme: Heavy Metal
 
   # Tabletop RPGs
   - url: https://www.enworld.org/forums/-/index.rss
@@ -51,6 +69,33 @@ feeds:
     theme: Tabletop RPG
   - url: https://slyflourish.com/rss.xml
     name: Sly Flourish
+    theme: Tabletop RPG
+  - url: https://www.dicebreaker.com/feed
+    name: Dicebreaker
+    theme: Tabletop RPG
+  - url: http://dev.rpg.net/index.xml
+    name: RPG.net
+    theme: Tabletop RPG
+  - url: https://www.wargamer.com/feed
+    name: Wargamer
+    theme: Tabletop RPG
+  - url: https://cannibalhalflinggaming.com/feed/
+    name: Cannibal Halfling Gaming
+    theme: Tabletop RPG
+  - url: https://thealexandrian.net/feed
+    name: The Alexandrian
+    theme: Tabletop RPG
+  - url: https://www.rascal.news/rss/
+    name: Rascal News
+    theme: Tabletop RPG
+  - url: https://tenfootpole.org/ironspike/?feed=rss2
+    name: Ten Foot Pole
+    theme: Tabletop RPG
+  - url: https://questingbeast.substack.com/feed
+    name: Questing Beast
+    theme: Tabletop RPG
+  - url: https://www.tribality.com/feed/
+    name: Tribality
     theme: Tabletop RPG
 
   # Tech
