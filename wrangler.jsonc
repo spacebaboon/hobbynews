@@ -1,8 +1,13 @@
 {
-    "name": "worker-name",
+    "$schema": "./node_modules/wrangler/config-schema.json",
+    "main": ".open-next/worker.js",
+    "name": "metalnews",
     "compatibility_date": "2025-11-24",
-    "main": "__experimental__/index.js",
+    "compatibility_flags": [
+        "nodejs_compat"
+    ],
     "assets": {
-        "directory": "./dist"
+        "directory": ".open-next/assets",
+        "binding": "ASSETS"
     }
 }
