@@ -27,7 +27,7 @@ export const FeedHeader: React.FC<FeedHeaderProps> = ({
             <LayoutGrid size={22} className="text-white" />
           </div>
           <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-            Board Game Feed
+            {selectedTheme} Feed
           </h1>
         </div>
 
@@ -37,11 +37,10 @@ export const FeedHeader: React.FC<FeedHeaderProps> = ({
               <button
                 key={theme}
                 onClick={() => onThemeChange(theme)}
-                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
-                  selectedTheme === theme
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${selectedTheme === theme
                     ? 'bg-white text-blue-600 shadow-md'
                     : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                }`}
+                  }`}
               >
                 {theme}
               </button>
@@ -68,11 +67,10 @@ export const FeedHeader: React.FC<FeedHeaderProps> = ({
             <button
               key={theme}
               onClick={() => onThemeChange(theme)}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-all ${
-                selectedTheme === theme
+              className={`px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-all ${selectedTheme === theme
                   ? 'bg-blue-600 text-white shadow-md'
                   : 'bg-gray-100 text-gray-600 hover:text-gray-900 hover:bg-gray-200'
-              }`}
+                }`}
             >
               {theme}
             </button>

@@ -1,48 +1,31 @@
-import { useEffect, useState } from 'react';
+'use client';
+
+import { useState } from 'react';
 import { AlertCircle } from 'lucide-react';
 import type { Article, FeedConfig } from '../types';
-import { loadFeedConfig } from '../utils/yamlLoader';
-import { fetchAllFeeds } from '../utils/rss';
 import { FeedHeader } from './FeedHeader';
 import { FeedSidebar } from './FeedSidebar';
 import { ArticleCard } from './ArticleCard';
 
-export const FeedViewer: React.FC = () => {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [feeds, setFeeds] = useState<FeedConfig[]>([]);
-  const [loading, setLoading] = useState(true);
+interface FeedViewerProps {
+  initialArticles: Article[];
+  feeds: FeedConfig[];
+}
+
+export const FeedViewer: React.FC<FeedViewerProps> = ({ initialArticles, feeds }) => {
+  const [articles, setArticles] = useState<Article[]>(initialArticles);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedTheme, setSelectedTheme] = useState<string>('All');
   const [sidebarTab, setSidebarTab] = useState<'sites' | 'authors'>('sites');
   const [selectedSites, setSelectedSites] = useState<Set<string>>(new Set());
   const [selectedAuthors, setSelectedAuthors] = useState<Set<string>>(new Set());
 
-  const init = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const loadedFeeds = await loadFeedConfig();
-      setFeeds(loadedFeeds);
-
-      if (loadedFeeds.length === 0) {
-        setError('No feeds found in feeds.yaml');
-        setLoading(false);
-        return;
-      }
-
-      const fetchedArticles = await fetchAllFeeds(loadedFeeds);
-      setArticles(fetchedArticles);
-    } catch (err) {
-      console.error(err);
-      setError('Failed to load feeds');
-    } finally {
-      setLoading(false);
-    }
+  const refresh = async () => {
+    // In a real Next.js app, we might use server actions or router.refresh()
+    // For now, we'll just reload the page to get fresh data from server
+    window.location.reload();
   };
-
-  useEffect(() => {
-    init();
-  }, []);
 
   const toggleSite = (site: string) => {
     setSelectedSites((prev) => {
@@ -135,7 +118,7 @@ export const FeedViewer: React.FC = () => {
         feedsCount={feeds.length}
         articlesCount={filteredArticles.length}
         loading={loading}
-        onRefresh={init}
+        onRefresh={refresh}
       />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
