@@ -2,13 +2,7 @@
     "feeds": {
         "Board Games": {
             "Dicebreaker": {
-                "url": "https://www.dicebreaker.com/feed/reviews"
-            },
-            "Shut Up & Sit Down": {
-                "url": "https://shutupandsitdown.com/feed/"
-            },
-            "BoardGameGeek": {
-                "url": "https://boardgamegeek.com/rss/news"
+                "url": "https://www.dicebreaker.com/feed/review"
             },
             "Board Game Quest": {
                 "url": "https://www.boardgamequest.com/feed/"
@@ -67,9 +61,6 @@
             },
             "Geek Native": {
                 "url": "https://www.geeknative.com/feed/"
-            },
-            "Sly Flourish": {
-                "url": "https://slyflourish.com/rss.xml"
             },
             "Dicebreaker": {
                 "url": "https://www.dicebreaker.com/feed"
