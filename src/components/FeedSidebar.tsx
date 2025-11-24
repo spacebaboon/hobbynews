@@ -1,3 +1,5 @@
+import { useRef, useEffect } from 'react';
+
 interface FeedSidebarProps {
   sidebarTab: 'sites' | 'authors';
   onTabChange: (tab: 'sites' | 'authors') => void;
@@ -19,6 +21,15 @@ export const FeedSidebar: React.FC<FeedSidebarProps> = ({
   onToggleSite,
   onToggleAuthor,
 }) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to top when tab changes
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [sidebarTab]);
+
   return (
     <aside className="w-full lg:w-80 flex-shrink-0">
       <div className="sticky top-24">
@@ -28,8 +39,8 @@ export const FeedSidebar: React.FC<FeedSidebarProps> = ({
             <button
               onClick={() => onTabChange('sites')}
               className={`flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-all ${sidebarTab === 'sites'
-                  ? 'bg-white text-blue-600 shadow-md'
-                  : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-white text-blue-600 shadow-md'
+                : 'text-gray-600 hover:text-gray-900'
                 }`}
             >
               Sites
@@ -37,8 +48,8 @@ export const FeedSidebar: React.FC<FeedSidebarProps> = ({
             <button
               onClick={() => onTabChange('authors')}
               className={`flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-all ${sidebarTab === 'authors'
-                  ? 'bg-white text-blue-600 shadow-md'
-                  : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-white text-blue-600 shadow-md'
+                : 'text-gray-600 hover:text-gray-900'
                 }`}
             >
               Authors
@@ -46,25 +57,58 @@ export const FeedSidebar: React.FC<FeedSidebarProps> = ({
           </div>
 
           {/* Content */}
-          {sidebarTab === 'sites' ? (
-            sites.length > 0 ? (
-              <div className="space-y-2">
-                {sites.map(({ site, count }) => {
-                  const isSelected = selectedSites.has(site);
-                  return (
-                    <button
-                      key={site}
-                      onClick={() => onToggleSite(site)}
-                      className={`w-full flex items-center justify-between py-2 px-3 rounded-lg transition-all ${isSelected
+          <div ref={scrollContainerRef} className="max-h-[calc(100vh-16rem)] overflow-y-auto">
+            {sidebarTab === 'sites' ? (
+              sites.length > 0 ? (
+                <div className="space-y-2">
+                  {sites.map(({ site, count }) => {
+                    const isSelected = selectedSites.has(site);
+                    return (
+                      <button
+                        key={site}
+                        onClick={() => onToggleSite(site)}
+                        className={`w-full flex items-center justify-between py-2 px-3 rounded-lg transition-all ${isSelected
                           ? 'bg-blue-100 border-2 border-blue-500'
                           : 'hover:bg-gray-50 border-2 border-transparent'
+                          }`}
+                      >
+                        <span
+                          className={`text-sm font-medium truncate ${isSelected ? 'text-blue-700' : 'text-gray-700'
+                            }`}
+                        >
+                          {site}
+                        </span>
+                        <span
+                          className={`text-xs font-bold px-2 py-1 rounded-full ml-2 flex-shrink-0 ${isSelected ? 'text-white bg-blue-600' : 'text-blue-600 bg-blue-50'
+                            }`}
+                        >
+                          {count}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500">No sites found</p>
+              )
+            ) : authors.length > 0 ? (
+              <div className="space-y-2">
+                {authors.map(({ author, count }) => {
+                  const isSelected = selectedAuthors.has(author);
+                  return (
+                    <button
+                      key={author}
+                      onClick={() => onToggleAuthor(author)}
+                      className={`w-full flex items-center justify-between py-2 px-3 rounded-lg transition-all ${isSelected
+                        ? 'bg-blue-100 border-2 border-blue-500'
+                        : 'hover:bg-gray-50 border-2 border-transparent'
                         }`}
                     >
                       <span
                         className={`text-sm font-medium truncate ${isSelected ? 'text-blue-700' : 'text-gray-700'
                           }`}
                       >
-                        {site}
+                        {author}
                       </span>
                       <span
                         className={`text-xs font-bold px-2 py-1 rounded-full ml-2 flex-shrink-0 ${isSelected ? 'text-white bg-blue-600' : 'text-blue-600 bg-blue-50'
@@ -77,40 +121,9 @@ export const FeedSidebar: React.FC<FeedSidebarProps> = ({
                 })}
               </div>
             ) : (
-              <p className="text-sm text-gray-500">No sites found</p>
-            )
-          ) : authors.length > 0 ? (
-            <div className="space-y-2">
-              {authors.map(({ author, count }) => {
-                const isSelected = selectedAuthors.has(author);
-                return (
-                  <button
-                    key={author}
-                    onClick={() => onToggleAuthor(author)}
-                    className={`w-full flex items-center justify-between py-2 px-3 rounded-lg transition-all ${isSelected
-                        ? 'bg-blue-100 border-2 border-blue-500'
-                        : 'hover:bg-gray-50 border-2 border-transparent'
-                      }`}
-                  >
-                    <span
-                      className={`text-sm font-medium truncate ${isSelected ? 'text-blue-700' : 'text-gray-700'
-                        }`}
-                    >
-                      {author}
-                    </span>
-                    <span
-                      className={`text-xs font-bold px-2 py-1 rounded-full ml-2 flex-shrink-0 ${isSelected ? 'text-white bg-blue-600' : 'text-blue-600 bg-blue-50'
-                        }`}
-                    >
-                      {count}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          ) : (
-            <p className="text-sm text-gray-500">No authors found</p>
-          )}
+              <p className="text-sm text-gray-500">No authors found</p>
+            )}
+          </div>
         </div>
       </div>
     </aside>
