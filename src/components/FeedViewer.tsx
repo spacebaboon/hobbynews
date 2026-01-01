@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { AlertCircle } from 'lucide-react';
 import type { Article, FeedConfig } from '../types';
 import { FeedHeader } from './FeedHeader';
@@ -13,18 +14,24 @@ interface FeedViewerProps {
 }
 
 export const FeedViewer: React.FC<FeedViewerProps> = ({ initialArticles, feeds }) => {
+  const router = useRouter();
   const [articles, setArticles] = useState<Article[]>(initialArticles);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+  const [error] = useState<string | null>(null);
   const [selectedTheme, setSelectedTheme] = useState<string>('All');
   const [sidebarTab, setSidebarTab] = useState<'sites' | 'authors'>('sites');
   const [selectedSites, setSelectedSites] = useState<Set<string>>(new Set());
   const [selectedAuthors, setSelectedAuthors] = useState<Set<string>>(new Set());
 
-  const refresh = async () => {
-    // In a real Next.js app, we might use server actions or router.refresh()
-    // For now, we'll just reload the page to get fresh data from server
-    window.location.reload();
+  // Update articles when initialArticles changes (e.g. after router.refresh())
+  if (initialArticles !== articles) {
+     setArticles(initialArticles);
+  }
+
+  const refresh = () => {
+    startTransition(() => {
+      router.refresh();
+    });
   };
 
   const toggleSite = (site: string) => {
@@ -125,7 +132,7 @@ export const FeedViewer: React.FC<FeedViewerProps> = ({ initialArticles, feeds }
         onThemeChange={handleThemeChange}
         feedsCount={themeFilteredFeedsCount}
         articlesCount={filteredArticles.length}
-        loading={loading}
+        loading={isPending}
         onRefresh={refresh}
       />
 
@@ -140,7 +147,7 @@ export const FeedViewer: React.FC<FeedViewerProps> = ({ initialArticles, feeds }
               </div>
             )}
 
-            {loading && articles.length === 0 ? (
+            {isPending && articles.length === 0 ? (
               <div className="space-y-6">
                 {[...Array(6)].map((_, i) => (
                   <div key={i} className="bg-white rounded-2xl p-8 h-64 animate-pulse">
@@ -159,7 +166,7 @@ export const FeedViewer: React.FC<FeedViewerProps> = ({ initialArticles, feeds }
               </div>
             )}
 
-            {!loading && filteredArticles.length === 0 && !error && (
+            {!isPending && filteredArticles.length === 0 && !error && (
               <div className="text-center py-32">
                 <p className="text-gray-500 text-lg font-medium">No articles found for this theme.</p>
               </div>
