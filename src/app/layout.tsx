@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "../index.css";
+import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {

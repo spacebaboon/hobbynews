@@ -4,8 +4,6 @@ import type { Article, FeedConfig } from '../types';
 
 const parser = new Parser();
 
-const CORS_PROXY = 'https://corsproxy.io/?';
-
 export const fetchFeed = async (feedConfig: FeedConfig): Promise<Article[]> => {
     try {
         // On server side, we might not need CORS proxy if fetching directly, 
@@ -35,7 +33,9 @@ export const fetchFeed = async (feedConfig: FeedConfig): Promise<Article[]> => {
             feedName: feedConfig.name,
         }));
     } catch (error) {
-        console.warn(`Error fetching feed ${feedConfig.name}:`, error);
+        // Log detailed error for debugging purposes
+        console.error(`Error fetching feed ${feedConfig.name} (${feedConfig.url}):`, error);
+        // We return empty array so that other feeds can still populate the page
         return [];
     }
 };
