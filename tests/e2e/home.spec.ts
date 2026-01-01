@@ -16,4 +16,10 @@ test('homepage has title and articles', async ({ page }) => {
   // Wait for either articles or error/empty state
   // This helps ensuring the page loaded something
   await expect(page.locator('main')).toBeVisible();
+
+  // Verify that our mock data is present
+  // Note: Since all feeds return the same mock data, we will see duplicates.
+  // We just want to check that at least one instance is visible.
+  await expect(page.getByText('Mock Article 1').first()).toBeVisible();
+  await expect(page.getByText('Test Author').first()).toBeVisible();
 });

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+  <title>Mock Feed</title>
+  <link>http://localhost:3000</link>
+  <description>A mock feed for testing</description>
+  <item>
+    <title>Mock Article 1</title>
+    <link>http://localhost:3000/article1</link>
+    <description>This is a description for mock article 1</description>
+    <pubDate>Mon, 01 Jan 2024 12:00:00 GMT</pubDate>
+    <dc:creator>Test Author</dc:creator>
+  </item>
+  <item>
+    <title>Mock Article 2</title>
+    <link>http://localhost:3000/article2</link>
+    <description>This is a description for mock article 2</description>
+    <pubDate>Sun, 31 Dec 2023 12:00:00 GMT</pubDate>
+    <dc:creator>Another Author</dc:creator>
+  </item>
+</channel>
+</rss>

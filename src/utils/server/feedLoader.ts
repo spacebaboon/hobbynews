@@ -8,7 +8,7 @@ export const loadFeedConfig = async (): Promise<FeedConfig[]> => {
         for (const [theme, feeds] of Object.entries(feedsConfig)) {
             for (const [name, config] of Object.entries(feeds)) {
                 feedsArray.push({
-                    url: config.url,
+                    url: process.env.MOCK_FEED_URL || config.url,
                     name,
                     theme
                 });
