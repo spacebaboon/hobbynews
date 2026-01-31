@@ -1,13 +1,12 @@
 # RSS Aggregator
 
-A simple RSS aggregator built with **Next.js**, **React 19**, **Tailwind CSS**, and **Cloudflare OpenNext**.
+A simple RSS aggregator built with **Next.js**, **React 19**, and **Tailwind CSS**.
 
 ## Features
 
 - Aggregates feeds from multiple sources.
 - Filter by theme, site, or author.
 - View article details.
-- Deployed to Cloudflare Pages/Workers via OpenNext.
 
 ## Getting Started
 
@@ -31,8 +30,4 @@ A simple RSS aggregator built with **Next.js**, **React 19**, **Tailwind CSS**, 
 
 ## Deployment
 
-This project is configured to be deployed on Cloudflare using OpenNext.
-
-```bash
-npm run deploy
-```
+This project deploys to [Vercel](https://vercel.com). Connect the GitHub repo in the Vercel dashboard — no additional configuration is needed.
