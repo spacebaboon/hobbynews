@@ -23,6 +23,12 @@ dist-ssr
 *.sln
 *.sw?
 
+# Environment
+.env
+
+# Generated
+src/generated/
+
 # Next.js
 .next/
 out/
