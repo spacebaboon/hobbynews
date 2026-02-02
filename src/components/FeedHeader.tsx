@@ -1,4 +1,7 @@
 import { LayoutGrid, RefreshCw } from 'lucide-react';
+import { useUser } from '@/hooks/useUser';
+import { LoginButton } from './auth/LoginButton';
+import { UserMenu } from './auth/UserMenu';
 
 interface FeedHeaderProps {
   themes: string[];
@@ -19,6 +22,8 @@ export const FeedHeader: React.FC<FeedHeaderProps> = ({
   loading,
   onRefresh,
 }) => {
+  const { user, loading: authLoading } = useUser();
+
   return (
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-lg shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
@@ -58,6 +63,8 @@ export const FeedHeader: React.FC<FeedHeaderProps> = ({
           >
             <RefreshCw size={20} className={`text-gray-600 ${loading ? 'animate-spin' : ''}`} />
           </button>
+
+          {!authLoading && (user ? <UserMenu user={user} /> : <LoginButton />)}
         </div>
       </div>
       {/* Mobile Theme Selector */}
