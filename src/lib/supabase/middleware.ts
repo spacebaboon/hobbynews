@@ -25,8 +25,20 @@ export async function updateSession(request: NextRequest) {
     },
   );
 
-  // Refreshes the auth token
-  await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  // Protected routes — redirect unauthenticated users to home
+  const protectedPrefixes = ["/settings", "/admin"];
+  const { pathname } = request.nextUrl;
+
+  if (!user && protectedPrefixes.some((p) => pathname.startsWith(p))) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/";
+    url.searchParams.set("login", "1");
+    return NextResponse.redirect(url);
+  }
 
   return supabaseResponse;
 }
