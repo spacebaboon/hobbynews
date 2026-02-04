@@ -8,7 +8,6 @@ interface FeedCardProps {
   siteUrl: string | null;
   subscriberCount: number;
   isSubscribed: boolean;
-  isLoggedIn: boolean;
 }
 
 export function FeedCard({
@@ -18,7 +17,6 @@ export function FeedCard({
   siteUrl,
   subscriberCount,
   isSubscribed,
-  isLoggedIn,
 }: FeedCardProps) {
   return (
     <div className="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
@@ -53,7 +51,6 @@ export function FeedCard({
         <SubscribeButton
           feedId={id}
           initialSubscribed={isSubscribed}
-          isLoggedIn={isLoggedIn}
         />
       </div>
     </div>

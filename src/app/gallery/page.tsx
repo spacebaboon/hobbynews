@@ -4,7 +4,7 @@ import { TopicSection } from "@/components/gallery/TopicSection";
 import { LayoutGrid } from "lucide-react";
 import Link from "next/link";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 export default async function GalleryPage() {
   const user = await getUser();
@@ -34,8 +34,6 @@ export default async function GalleryPage() {
           .then((subs) => new Set(subs.map((s) => s.feedId)))
       : Promise.resolve(new Set<string>()),
   ]);
-
-  const isLoggedIn = !!user;
 
   return (
     <div className="min-h-screen bg-gray-200">
@@ -72,7 +70,6 @@ export default async function GalleryPage() {
               _count: ft.feed._count,
             }))}
             subscribedFeedIds={subscribedFeedIds}
-            isLoggedIn={isLoggedIn}
           />
         ))}
 

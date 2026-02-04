@@ -2,23 +2,23 @@
 
 import { useState } from "react";
 import { Check, Plus } from "lucide-react";
+import { useUser } from "@/hooks/useUser";
 
 interface SubscribeButtonProps {
   feedId: string;
   initialSubscribed: boolean;
-  isLoggedIn: boolean;
 }
 
 export function SubscribeButton({
   feedId,
   initialSubscribed,
-  isLoggedIn,
 }: SubscribeButtonProps) {
+  const { user, loading: authLoading } = useUser();
   const [subscribed, setSubscribed] = useState(initialSubscribed);
   const [loading, setLoading] = useState(false);
 
   async function handleToggle() {
-    if (!isLoggedIn) return;
+    if (!user) return;
     setLoading(true);
     try {
       const res = await fetch("/api/subscriptions", {
@@ -35,7 +35,13 @@ export function SubscribeButton({
     }
   }
 
-  if (!isLoggedIn) {
+  if (authLoading) {
+    return (
+      <span className="text-xs text-gray-400">...</span>
+    );
+  }
+
+  if (!user) {
     return (
       <span className="text-xs text-gray-400 italic">Log in to subscribe</span>
     );

@@ -13,7 +13,6 @@ interface TopicSectionProps {
   description: string | null;
   feeds: Feed[];
   subscribedFeedIds: Set<string>;
-  isLoggedIn: boolean;
 }
 
 export function TopicSection({
@@ -21,7 +20,6 @@ export function TopicSection({
   description,
   feeds,
   subscribedFeedIds,
-  isLoggedIn,
 }: TopicSectionProps) {
   return (
     <section>
@@ -41,7 +39,6 @@ export function TopicSection({
             siteUrl={feed.siteUrl}
             subscriberCount={feed._count.subscribers}
             isSubscribed={subscribedFeedIds.has(feed.id)}
-            isLoggedIn={isLoggedIn}
           />
         ))}
       </div>
