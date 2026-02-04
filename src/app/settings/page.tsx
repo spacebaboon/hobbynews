@@ -9,7 +9,7 @@ export default async function SettingsPage() {
   const user = await getUser();
   if (!user) redirect("/");
 
-  const [subscriptions, categories, customFeeds] = await Promise.all([
+  const [subscriptions, categories, customFeeds, topics] = await Promise.all([
     prisma.userFeedSubscription.findMany({
       where: { userId: user.id },
       include: { feed: { select: { id: true, name: true, url: true } } },
@@ -21,7 +21,12 @@ export default async function SettingsPage() {
     }),
     prisma.userCustomFeed.findMany({
       where: { userId: user.id },
+      include: { category: { select: { name: true } } },
       orderBy: { createdAt: "desc" },
+    }),
+    prisma.topic.findMany({
+      orderBy: { sortOrder: "asc" },
+      select: { id: true, name: true },
     }),
   ]);
 
@@ -76,6 +81,7 @@ export default async function SettingsPage() {
           initialSubscriptions={subscriptions}
           initialCategories={categories}
           initialCustomFeeds={customFeeds}
+          topics={topics}
         />
       </main>
     </div>

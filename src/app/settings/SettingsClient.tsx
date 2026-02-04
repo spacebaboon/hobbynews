@@ -22,18 +22,26 @@ interface CustomFeed {
   url: string;
   name: string;
   categoryId: string | null;
+  category: { name: string } | null;
+}
+
+interface Topic {
+  id: string;
+  name: string;
 }
 
 interface SettingsClientProps {
   initialSubscriptions: Subscription[];
   initialCategories: Category[];
   initialCustomFeeds: CustomFeed[];
+  topics: Topic[];
 }
 
 export function SettingsClient({
   initialSubscriptions,
   initialCategories,
   initialCustomFeeds,
+  topics,
 }: SettingsClientProps) {
   const [subscriptions, setSubscriptions] = useState(initialSubscriptions);
   const [categories, setCategories] = useState(initialCategories);
@@ -41,6 +49,7 @@ export function SettingsClient({
   const [newCategoryName, setNewCategoryName] = useState("");
   const [newFeedUrl, setNewFeedUrl] = useState("");
   const [newFeedName, setNewFeedName] = useState("");
+  const [newFeedCategoryId, setNewFeedCategoryId] = useState("");
   const [categoryError, setCategoryError] = useState<string | null>(null);
   const [feedError, setFeedError] = useState<string | null>(null);
   const [feedLoading, setFeedLoading] = useState(false);
@@ -94,14 +103,27 @@ export function SettingsClient({
     const res = await fetch("/api/custom-feeds", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url, name: newFeedName.trim() || undefined }),
+      body: JSON.stringify({
+        url,
+        name: newFeedName.trim() || undefined,
+        ...(newFeedCategoryId.startsWith("topic:")
+          ? { categoryName: newFeedCategoryId.slice(6) }
+          : { categoryId: newFeedCategoryId || undefined }),
+      }),
     });
     setFeedLoading(false);
     if (res.ok) {
       const feed = await res.json();
+      if (newFeedCategoryId.startsWith("topic:")) {
+        feed.category = { name: newFeedCategoryId.slice(6) };
+      } else {
+        const selectedCat = categories.find((c) => c.id === newFeedCategoryId);
+        feed.category = selectedCat ? { name: selectedCat.name } : null;
+      }
       setCustomFeeds((f) => [feed, ...f]);
       setNewFeedUrl("");
       setNewFeedName("");
+      setNewFeedCategoryId("");
     } else {
       const data = await res.json();
       setFeedError(data.error || "Failed to add feed");
@@ -228,6 +250,9 @@ export function SettingsClient({
                     {feed.name}
                   </p>
                   <p className="text-xs text-gray-400 truncate">{feed.url}</p>
+                  {feed.category && (
+                    <p className="text-xs text-blue-500">{feed.category.name}</p>
+                  )}
                 </div>
                 <button
                   onClick={() => deleteCustomFeed(feed.id)}
@@ -248,14 +273,35 @@ export function SettingsClient({
             placeholder="RSS feed URL"
             className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+          <input
+            type="text"
+            value={newFeedName}
+            onChange={(e) => setNewFeedName(e.target.value)}
+            placeholder="Name (optional, auto-detected)"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
           <div className="flex gap-2">
-            <input
-              type="text"
-              value={newFeedName}
-              onChange={(e) => setNewFeedName(e.target.value)}
-              placeholder="Name (optional, auto-detected)"
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <select
+              value={newFeedCategoryId}
+              onChange={(e) => setNewFeedCategoryId(e.target.value)}
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+            >
+              <option value="">No category</option>
+              {topics.length > 0 && (
+                <optgroup label="Topics">
+                  {topics.map((t) => (
+                    <option key={t.id} value={`topic:${t.name}`}>{t.name}</option>
+                  ))}
+                </optgroup>
+              )}
+              {categories.length > 0 && (
+                <optgroup label="My Categories">
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                  ))}
+                </optgroup>
+              )}
+            </select>
             <button
               onClick={addCustomFeed}
               disabled={!newFeedUrl.trim() || feedLoading}

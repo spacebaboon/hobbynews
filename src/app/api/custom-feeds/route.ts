@@ -21,7 +21,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const user = await requireUser();
-    const { url, name, categoryId } = await request.json();
+    const { url, name, categoryId, categoryName } = await request.json();
 
     if (!url?.trim()) {
       return NextResponse.json(
@@ -44,12 +44,37 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    let resolvedCategoryId = categoryId || null;
+    if (!resolvedCategoryId && categoryName?.trim()) {
+      const slug = categoryName.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+      const existing = await prisma.userCategory.findFirst({
+        where: { userId: user.id, slug },
+      });
+      if (existing) {
+        resolvedCategoryId = existing.id;
+      } else {
+        const maxOrder = await prisma.userCategory.aggregate({
+          where: { userId: user.id },
+          _max: { sortOrder: true },
+        });
+        const created = await prisma.userCategory.create({
+          data: {
+            userId: user.id,
+            name: categoryName.trim(),
+            slug,
+            sortOrder: (maxOrder._max.sortOrder ?? -1) + 1,
+          },
+        });
+        resolvedCategoryId = created.id;
+      }
+    }
+
     const customFeed = await prisma.userCustomFeed.create({
       data: {
         userId: user.id,
         url: url.trim(),
         name: feedName,
-        categoryId: categoryId || null,
+        categoryId: resolvedCategoryId,
       },
     });
 

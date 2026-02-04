@@ -89,8 +89,9 @@ model UserCategory {
   sortOrder Int      @default(0)
   createdAt DateTime @default(now())
 
-  user  User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  feeds UserFeedSubscription[]
+  user        User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  feeds       UserFeedSubscription[]
+  customFeeds UserCustomFeed[]
 
   @@unique([userId, slug])
 }
@@ -103,7 +104,8 @@ model UserCustomFeed {
   categoryId String?
   createdAt  DateTime @default(now())
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category UserCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
   @@unique([userId, url])
 }

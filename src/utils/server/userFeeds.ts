@@ -21,6 +21,7 @@ export async function loadUserFeeds(userId: string): Promise<FeedConfig[]> {
     }),
     prisma.userCustomFeed.findMany({
       where: { userId },
+      include: { category: true },
     }),
   ]);
 
@@ -44,7 +45,7 @@ export async function loadUserFeeds(userId: string): Promise<FeedConfig[]> {
     feeds.push({
       url: custom.url,
       name: custom.name,
-      theme: "Custom",
+      theme: custom.category?.name || "Uncategorized",
     });
   }
 
