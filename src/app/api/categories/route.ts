@@ -56,16 +56,19 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(category, { status: 201 });
   } catch (err) {
-    if (
-      err instanceof Error &&
-      err.message.includes("Unique constraint failed")
-    ) {
-      return NextResponse.json(
-        { error: "Category already exists" },
-        { status: 409 },
-      );
+    if (err instanceof Error) {
+      if (err.message === "Unauthorized") {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+      if (err.message.includes("Unique constraint failed")) {
+        return NextResponse.json(
+          { error: "Category already exists" },
+          { status: 409 },
+        );
+      }
     }
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    console.error("POST /api/categories error:", err);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
 

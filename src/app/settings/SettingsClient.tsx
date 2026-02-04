@@ -41,6 +41,7 @@ export function SettingsClient({
   const [newCategoryName, setNewCategoryName] = useState("");
   const [newFeedUrl, setNewFeedUrl] = useState("");
   const [newFeedName, setNewFeedName] = useState("");
+  const [categoryError, setCategoryError] = useState<string | null>(null);
   const [feedError, setFeedError] = useState<string | null>(null);
   const [feedLoading, setFeedLoading] = useState(false);
 
@@ -58,6 +59,7 @@ export function SettingsClient({
   async function addCategory() {
     const name = newCategoryName.trim();
     if (!name) return;
+    setCategoryError(null);
     const res = await fetch("/api/categories", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -67,6 +69,9 @@ export function SettingsClient({
       const cat = await res.json();
       setCategories((c) => [...c, cat]);
       setNewCategoryName("");
+    } else {
+      const data = await res.json();
+      setCategoryError(data.error || "Failed to add category");
     }
   }
 
@@ -203,6 +208,9 @@ export function SettingsClient({
             Add
           </button>
         </div>
+        {categoryError && (
+          <p className="text-sm text-red-500 mt-2">{categoryError}</p>
+        )}
       </section>
 
       {/* Custom Feeds */}

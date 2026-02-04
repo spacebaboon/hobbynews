@@ -1,4 +1,5 @@
 import { createClient } from "./server";
+import { prisma } from "@/lib/prisma";
 
 /**
  * Get the current authenticated user from a server context.
@@ -21,5 +22,22 @@ export async function requireUser() {
   if (!user) {
     throw new Error("Unauthorized");
   }
+
+  // Ensure a User row exists in the database
+  await prisma.user.upsert({
+    where: { id: user.id },
+    update: {
+      email: user.email!,
+      name: user.user_metadata?.full_name || null,
+      avatarUrl: user.user_metadata?.avatar_url || null,
+    },
+    create: {
+      id: user.id,
+      email: user.email!,
+      name: user.user_metadata?.full_name || null,
+      avatarUrl: user.user_metadata?.avatar_url || null,
+    },
+  });
+
   return user;
 }
