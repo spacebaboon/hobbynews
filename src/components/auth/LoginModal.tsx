@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { createClient } from '@/lib/supabase/client';
 import { X, Mail } from 'lucide-react';
 
@@ -14,9 +15,12 @@ export function LoginModal({ open, onClose }: LoginModalProps) {
   const [magicLinkSent, setMagicLinkSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const supabase = createClient();
 
-  if (!open) return null;
+  useEffect(() => setMounted(true), []);
+
+  if (!open || !mounted) return null;
 
   const handleGoogleLogin = async () => {
     await supabase.auth.signInWithOAuth({
@@ -48,7 +52,7 @@ export function LoginModal({ open, onClose }: LoginModalProps) {
     onClose();
   };
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-[100] flex items-center justify-center">
       <div className="absolute inset-0 bg-black/50" onClick={handleClose} />
       <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-sm mx-4 p-6">
@@ -125,6 +129,7 @@ export function LoginModal({ open, onClose }: LoginModalProps) {
           </>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
