@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { LogOut, User as UserIcon } from 'lucide-react';
+import { LogOut, User as UserIcon, Settings, LayoutGrid } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 
 interface UserMenuProps {
@@ -61,6 +61,20 @@ export function UserMenu({ user }: UserMenuProps) {
             <p className="text-sm font-medium text-gray-900 truncate">{name}</p>
             <p className="text-xs text-gray-500 truncate">{user.email}</p>
           </div>
+          <a
+            href="/gallery"
+            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+          >
+            <LayoutGrid size={16} />
+            Feed Gallery
+          </a>
+          <a
+            href="/settings"
+            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+          >
+            <Settings size={16} />
+            Settings
+          </a>
           <button
             onClick={handleSignOut}
             className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
