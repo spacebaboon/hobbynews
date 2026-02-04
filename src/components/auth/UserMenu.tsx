@@ -50,6 +50,9 @@ export function UserMenu({ user }: UserMenuProps) {
             <UserIcon size={16} className="text-blue-600" />
           </div>
         )}
+        <span className="hidden sm:inline text-sm font-medium text-gray-700 max-w-[120px] truncate">
+          {user.user_metadata?.full_name || user.email?.split('@')[0]}
+        </span>
       </button>
 
       {open && (
