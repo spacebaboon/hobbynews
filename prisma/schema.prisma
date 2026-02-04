@@ -16,7 +16,10 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  preferences UserPreferences?
+  subscriptions UserFeedSubscription[]
+  categories    UserCategory[]
+  customFeeds   UserCustomFeed[]
+  preferences   UserPreferences?
 }
 
 model UserPreferences {
@@ -25,4 +28,88 @@ model UserPreferences {
   user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   themeId     String?
   customTheme Json?
+}
+
+model FeedSource {
+  id          String     @id @default(uuid())
+  url         String     @unique
+  name        String
+  description String?
+  siteUrl     String?
+  iconUrl     String?
+  status      FeedStatus @default(APPROVED)
+  submittedBy String?
+  approvedBy  String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  topics      FeedTopic[]
+  subscribers UserFeedSubscription[]
+}
+
+model Topic {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  slug        String  @unique
+  description String?
+  iconName    String?
+  sortOrder   Int     @default(0)
+
+  feeds FeedTopic[]
+}
+
+model FeedTopic {
+  feedId  String
+  topicId String
+  feed    FeedSource @relation(fields: [feedId], references: [id], onDelete: Cascade)
+  topic   Topic      @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@id([feedId, topicId])
+}
+
+model UserFeedSubscription {
+  id         String   @id @default(uuid())
+  userId     String
+  feedId     String
+  categoryId String?
+  createdAt  DateTime @default(now())
+
+  user     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  feed     FeedSource    @relation(fields: [feedId], references: [id], onDelete: Cascade)
+  category UserCategory? @relation(fields: [categoryId], references: [id])
+
+  @@unique([userId, feedId])
+}
+
+model UserCategory {
+  id        String   @id @default(uuid())
+  userId    String
+  name      String
+  slug      String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  user  User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  feeds UserFeedSubscription[]
+
+  @@unique([userId, slug])
+}
+
+model UserCustomFeed {
+  id         String   @id @default(uuid())
+  userId     String
+  url        String
+  name       String
+  categoryId String?
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, url])
+}
+
+enum FeedStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
