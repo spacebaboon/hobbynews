@@ -8,7 +8,7 @@ interface ThemeSelectorProps {
 }
 
 export function ThemeSelector({ onSelect }: ThemeSelectorProps) {
-  const { theme: currentTheme, themes, setTheme, isLoading } = useTheme();
+  const { theme: currentTheme, themes, setTheme, applyThemeColors, isLoading } = useTheme();
 
   if (isLoading) {
     return (

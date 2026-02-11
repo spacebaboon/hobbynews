@@ -146,34 +146,34 @@ export function SettingsClient({
   return (
     <>
       {/* Subscriptions */}
-      <section className="bg-white rounded-2xl p-6 shadow-sm">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">
+      <section className="bg-theme-surface border border-theme-border rounded-2xl p-6 shadow-sm">
+        <h2 className="text-lg font-bold text-theme-text mb-4">
           Subscriptions ({subscriptions.length})
         </h2>
         {subscriptions.length === 0 ? (
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-theme-text-muted">
             No subscriptions yet.{" "}
-            <a href="/gallery" className="text-blue-600 hover:underline">
+            <a href="/gallery" className="text-theme-primary hover:underline">
               Browse the gallery
             </a>{" "}
             to subscribe to feeds.
           </p>
         ) : (
-          <ul className="divide-y divide-gray-100">
+          <ul className="divide-y divide-theme-border">
             {subscriptions.map((sub) => (
               <li
                 key={sub.id}
                 className="flex items-center justify-between py-3"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <Rss size={16} className="text-orange-500 flex-shrink-0" />
-                  <span className="text-sm font-medium text-gray-900 truncate">
+                  <Rss size={16} className="text-theme-accent flex-shrink-0" />
+                  <span className="text-sm font-medium text-theme-text truncate">
                     {sub.feed.name}
                   </span>
                 </div>
                 <button
                   onClick={() => unsubscribe(sub.feedId)}
-                  className="text-gray-400 hover:text-red-500 p-1"
+                  className="text-theme-text-muted hover:text-red-500 p-1"
                   title="Unsubscribe"
                 >
                   <X size={16} />
@@ -185,10 +185,10 @@ export function SettingsClient({
       </section>
 
       {/* Categories */}
-      <section className="bg-white rounded-2xl p-6 shadow-sm">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">Categories</h2>
+      <section className="bg-theme-surface border border-theme-border rounded-2xl p-6 shadow-sm">
+        <h2 className="text-lg font-bold text-theme-text mb-4">Categories</h2>
         {categories.length > 0 && (
-          <ul className="divide-y divide-gray-100 mb-4">
+          <ul className="divide-y divide-theme-border mb-4">
             {categories.map((cat) => (
               <li
                 key={cat.id}
@@ -197,15 +197,15 @@ export function SettingsClient({
                 <div className="flex items-center gap-3">
                   <FolderOpen
                     size={16}
-                    className="text-blue-500 flex-shrink-0"
+                    className="text-theme-primary flex-shrink-0"
                   />
-                  <span className="text-sm font-medium text-gray-900">
+                  <span className="text-sm font-medium text-theme-text">
                     {cat.name}
                   </span>
                 </div>
                 <button
                   onClick={() => deleteCategory(cat.id)}
-                  className="text-gray-400 hover:text-red-500 p-1"
+                  className="text-theme-text-muted hover:text-red-500 p-1"
                   title="Delete category"
                 >
                   <Trash2 size={16} />
@@ -221,12 +221,12 @@ export function SettingsClient({
             onChange={(e) => setNewCategoryName(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && addCategory()}
             placeholder="New category name"
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 px-3 py-2 border border-theme-border rounded-lg text-sm bg-theme-surface text-theme-text focus:outline-none focus:ring-2 focus:ring-theme-primary"
           />
           <button
             onClick={addCategory}
             disabled={!newCategoryName.trim()}
-            className="inline-flex items-center gap-1 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            className="inline-flex items-center gap-1 px-3 py-2 bg-theme-primary text-white text-sm font-medium rounded-lg hover:opacity-90 disabled:opacity-50"
           >
             <Plus size={14} />
             Add
@@ -238,27 +238,27 @@ export function SettingsClient({
       </section>
 
       {/* Custom Feeds */}
-      <section className="bg-white rounded-2xl p-6 shadow-sm">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">Custom Feeds</h2>
+      <section className="bg-theme-surface border border-theme-border rounded-2xl p-6 shadow-sm">
+        <h2 className="text-lg font-bold text-theme-text mb-4">Custom Feeds</h2>
         {customFeeds.length > 0 && (
-          <ul className="divide-y divide-gray-100 mb-4">
+          <ul className="divide-y divide-theme-border mb-4">
             {customFeeds.map((feed) => (
               <li
                 key={feed.id}
                 className="flex items-center justify-between py-3"
               >
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-gray-900 truncate">
+                  <p className="text-sm font-medium text-theme-text truncate">
                     {feed.name}
                   </p>
-                  <p className="text-xs text-gray-400 truncate">{feed.url}</p>
+                  <p className="text-xs text-theme-text-muted truncate">{feed.url}</p>
                   {feed.category && (
-                    <p className="text-xs text-blue-500">{feed.category.name}</p>
+                    <p className="text-xs text-theme-primary">{feed.category.name}</p>
                   )}
                 </div>
                 <button
                   onClick={() => deleteCustomFeed(feed.id)}
-                  className="text-gray-400 hover:text-red-500 p-1 flex-shrink-0"
+                  className="text-theme-text-muted hover:text-red-500 p-1 flex-shrink-0"
                   title="Remove feed"
                 >
                   <Trash2 size={16} />
@@ -273,20 +273,20 @@ export function SettingsClient({
             value={newFeedUrl}
             onChange={(e) => setNewFeedUrl(e.target.value)}
             placeholder="RSS feed URL"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-theme-border rounded-lg text-sm bg-theme-surface text-theme-text focus:outline-none focus:ring-2 focus:ring-theme-primary"
           />
           <input
             type="text"
             value={newFeedName}
             onChange={(e) => setNewFeedName(e.target.value)}
             placeholder="Name (optional, auto-detected)"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-theme-border rounded-lg text-sm bg-theme-surface text-theme-text focus:outline-none focus:ring-2 focus:ring-theme-primary"
           />
           <div className="flex gap-2">
             <select
               value={newFeedCategoryId}
               onChange={(e) => setNewFeedCategoryId(e.target.value)}
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+              className="flex-1 px-3 py-2 border border-theme-border rounded-lg text-sm bg-theme-surface text-theme-text focus:outline-none focus:ring-2 focus:ring-theme-primary"
             >
               <option value="">No category</option>
               {topics.length > 0 && (
@@ -307,7 +307,7 @@ export function SettingsClient({
             <button
               onClick={addCustomFeed}
               disabled={!newFeedUrl.trim() || feedLoading}
-              className="inline-flex items-center gap-1 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50"
+              className="inline-flex items-center gap-1 px-3 py-2 bg-theme-primary text-white text-sm font-medium rounded-lg hover:opacity-90 disabled:opacity-50"
             >
               <Plus size={14} />
               {feedLoading ? "Validating..." : "Add"}
@@ -320,15 +320,15 @@ export function SettingsClient({
       </section>
 
       {/* Theme */}
-      <section className="bg-white rounded-2xl p-6 shadow-sm">
+      <section className="bg-theme-surface border border-theme-border rounded-2xl p-6 shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Palette size={20} className="text-purple-500" />
-            <h2 className="text-lg font-bold text-gray-900">Theme</h2>
+            <Palette size={20} className="text-theme-accent" />
+            <h2 className="text-lg font-bold text-theme-text">Theme</h2>
           </div>
           <Link
             href="/settings/theme"
-            className="flex items-center gap-1.5 text-sm text-purple-600 hover:text-purple-700 font-medium"
+            className="flex items-center gap-1.5 text-sm text-theme-accent hover:opacity-80 font-medium"
           >
             <Paintbrush size={14} />
             Customize
