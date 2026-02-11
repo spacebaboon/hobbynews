@@ -25,26 +25,26 @@ export const FeedHeader: React.FC<FeedHeaderProps> = ({
   const { user, loading: authLoading } = useUser();
 
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-lg shadow-sm">
+    <header className="sticky top-0 z-50 bg-theme-surface/90 backdrop-blur-lg shadow-sm border-b border-theme-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-2.5 rounded-xl shadow-md">
+          <div className="bg-gradient-to-br from-theme-primary to-theme-secondary p-2.5 rounded-xl shadow-md">
             <LayoutGrid size={22} className="text-white" />
           </div>
-          <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+          <h1 className="text-2xl font-bold text-theme-primary">
             {selectedTheme} Feed
           </h1>
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="hidden md:flex bg-gray-100 rounded-xl p-1.5 shadow-inner">
+          <div className="hidden md:flex bg-theme-background rounded-xl p-1.5 shadow-inner">
             {themes.map((theme) => (
               <button
                 key={theme}
                 onClick={() => onThemeChange(theme)}
                 className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${selectedTheme === theme
-                    ? 'bg-white text-blue-600 shadow-md'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                    ? 'bg-theme-surface text-theme-primary shadow-md'
+                    : 'text-theme-text-muted hover:text-theme-text hover:bg-theme-surface/50'
                   }`}
               >
                 {theme}
@@ -52,16 +52,16 @@ export const FeedHeader: React.FC<FeedHeaderProps> = ({
             ))}
           </div>
 
-          <span className="text-sm text-gray-600 font-medium hidden sm:block">
+          <span className="text-sm text-theme-text-muted font-medium hidden sm:block">
             {feedsCount} Sources • {articlesCount} Articles
           </span>
           <button
             onClick={onRefresh}
             disabled={loading}
-            className="p-2.5 hover:bg-gray-100 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2.5 hover:bg-theme-background rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             title="Refresh feeds"
           >
-            <RefreshCw size={20} className={`text-gray-600 ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw size={20} className={`text-theme-text-muted ${loading ? 'animate-spin' : ''}`} />
           </button>
 
           {!authLoading && (user ? <UserMenu user={user} /> : <LoginButton />)}
@@ -75,8 +75,8 @@ export const FeedHeader: React.FC<FeedHeaderProps> = ({
               key={theme}
               onClick={() => onThemeChange(theme)}
               className={`px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-all ${selectedTheme === theme
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'bg-gray-100 text-gray-600 hover:text-gray-900 hover:bg-gray-200'
+                  ? 'bg-theme-primary text-white shadow-md'
+                  : 'bg-theme-background text-theme-text-muted hover:text-theme-text hover:bg-theme-border'
                 }`}
             >
               {theme}

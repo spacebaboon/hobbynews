@@ -33,14 +33,14 @@ export const FeedSidebar: React.FC<FeedSidebarProps> = ({
   return (
     <aside className="w-full lg:w-80 flex-shrink-0">
       <div className="sticky top-24">
-        <div className="bg-white rounded-2xl p-6 shadow-sm">
+        <div className="bg-theme-surface border border-theme-border rounded-2xl p-6 shadow-sm">
           {/* Tabs */}
-          <div className="flex gap-2 mb-4 bg-gray-100 rounded-xl p-1">
+          <div className="flex gap-2 mb-4 bg-theme-background rounded-xl p-1">
             <button
               onClick={() => onTabChange('sites')}
               className={`flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-all ${sidebarTab === 'sites'
-                ? 'bg-white text-blue-600 shadow-md'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-theme-surface text-theme-primary shadow-md'
+                : 'text-theme-text-muted hover:text-theme-text'
                 }`}
             >
               Sites
@@ -48,8 +48,8 @@ export const FeedSidebar: React.FC<FeedSidebarProps> = ({
             <button
               onClick={() => onTabChange('authors')}
               className={`flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-all ${sidebarTab === 'authors'
-                ? 'bg-white text-blue-600 shadow-md'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-theme-surface text-theme-primary shadow-md'
+                : 'text-theme-text-muted hover:text-theme-text'
                 }`}
             >
               Authors
@@ -68,18 +68,18 @@ export const FeedSidebar: React.FC<FeedSidebarProps> = ({
                         key={site}
                         onClick={() => onToggleSite(site)}
                         className={`w-full flex items-center justify-between py-2 px-3 rounded-lg transition-all ${isSelected
-                          ? 'bg-blue-100 border-2 border-blue-500'
-                          : 'hover:bg-gray-50 border-2 border-transparent'
+                          ? 'bg-theme-primary/20 border-2 border-theme-primary'
+                          : 'hover:bg-theme-background border-2 border-transparent'
                           }`}
                       >
                         <span
-                          className={`text-sm font-medium truncate ${isSelected ? 'text-blue-700' : 'text-gray-700'
+                          className={`text-sm font-medium truncate ${isSelected ? 'text-theme-primary' : 'text-theme-text'
                             }`}
                         >
                           {site}
                         </span>
                         <span
-                          className={`text-xs font-bold px-2 py-1 rounded-full ml-2 flex-shrink-0 ${isSelected ? 'text-white bg-blue-600' : 'text-blue-600 bg-blue-50'
+                          className={`text-xs font-bold px-2 py-1 rounded-full ml-2 flex-shrink-0 ${isSelected ? 'text-white bg-theme-primary' : 'text-theme-primary bg-theme-primary/10'
                             }`}
                         >
                           {count}
@@ -89,7 +89,7 @@ export const FeedSidebar: React.FC<FeedSidebarProps> = ({
                   })}
                 </div>
               ) : (
-                <p className="text-sm text-gray-500">No sites found</p>
+                <p className="text-sm text-theme-text-muted">No sites found</p>
               )
             ) : authors.length > 0 ? (
               <div className="space-y-2">
@@ -100,18 +100,18 @@ export const FeedSidebar: React.FC<FeedSidebarProps> = ({
                       key={author}
                       onClick={() => onToggleAuthor(author)}
                       className={`w-full flex items-center justify-between py-2 px-3 rounded-lg transition-all ${isSelected
-                        ? 'bg-blue-100 border-2 border-blue-500'
-                        : 'hover:bg-gray-50 border-2 border-transparent'
+                        ? 'bg-theme-primary/20 border-2 border-theme-primary'
+                        : 'hover:bg-theme-background border-2 border-transparent'
                         }`}
                     >
                       <span
-                        className={`text-sm font-medium truncate ${isSelected ? 'text-blue-700' : 'text-gray-700'
+                        className={`text-sm font-medium truncate ${isSelected ? 'text-theme-primary' : 'text-theme-text'
                           }`}
                       >
                         {author}
                       </span>
                       <span
-                        className={`text-xs font-bold px-2 py-1 rounded-full ml-2 flex-shrink-0 ${isSelected ? 'text-white bg-blue-600' : 'text-blue-600 bg-blue-50'
+                        className={`text-xs font-bold px-2 py-1 rounded-full ml-2 flex-shrink-0 ${isSelected ? 'text-white bg-theme-primary' : 'text-theme-primary bg-theme-primary/10'
                           }`}
                       >
                         {count}
@@ -121,7 +121,7 @@ export const FeedSidebar: React.FC<FeedSidebarProps> = ({
                 })}
               </div>
             ) : (
-              <p className="text-sm text-gray-500">No authors found</p>
+              <p className="text-sm text-theme-text-muted">No authors found</p>
             )}
           </div>
         </div>

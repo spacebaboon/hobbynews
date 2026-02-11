@@ -125,7 +125,7 @@ export const FeedViewer: React.FC<FeedViewerProps> = ({ initialArticles, feeds }
     : feeds.filter(f => f.theme === selectedTheme).length;
 
   return (
-    <div className="min-h-screen bg-gray-200 text-gray-900 font-sans selection:bg-blue-500 selection:text-white">
+    <div className="min-h-screen bg-theme-background text-theme-text font-sans selection:bg-theme-primary selection:text-white">
       <FeedHeader
         themes={themes}
         selectedTheme={selectedTheme}
@@ -150,11 +150,11 @@ export const FeedViewer: React.FC<FeedViewerProps> = ({ initialArticles, feeds }
             {isPending && articles.length === 0 ? (
               <div className="space-y-6">
                 {[...Array(6)].map((_, i) => (
-                  <div key={i} className="bg-white rounded-2xl p-8 h-64 animate-pulse">
-                    <div className="h-4 bg-gray-200 rounded w-1/4 mb-5"></div>
-                    <div className="h-6 bg-gray-200 rounded w-3/4 mb-5"></div>
-                    <div className="h-4 bg-gray-200 rounded w-full mb-3"></div>
-                    <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                  <div key={i} className="bg-theme-surface rounded-2xl p-8 h-64 animate-pulse">
+                    <div className="h-4 bg-theme-border rounded w-1/4 mb-5"></div>
+                    <div className="h-6 bg-theme-border rounded w-3/4 mb-5"></div>
+                    <div className="h-4 bg-theme-border rounded w-full mb-3"></div>
+                    <div className="h-4 bg-theme-border rounded w-2/3"></div>
                   </div>
                 ))}
               </div>
