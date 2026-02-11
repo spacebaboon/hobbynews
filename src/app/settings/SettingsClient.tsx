@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Trash2, Plus, Rss, FolderOpen, X, Palette } from "lucide-react";
+import { Trash2, Plus, Rss, FolderOpen, X, Palette, Paintbrush } from "lucide-react";
+import Link from "next/link";
 import { ThemeSelector } from "@/components/theme/ThemeSelector";
 
 interface Subscription {
@@ -320,9 +321,18 @@ export function SettingsClient({
 
       {/* Theme */}
       <section className="bg-white rounded-2xl p-6 shadow-sm">
-        <div className="flex items-center gap-2 mb-4">
-          <Palette size={20} className="text-purple-500" />
-          <h2 className="text-lg font-bold text-gray-900">Theme</h2>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Palette size={20} className="text-purple-500" />
+            <h2 className="text-lg font-bold text-gray-900">Theme</h2>
+          </div>
+          <Link
+            href="/settings/theme"
+            className="flex items-center gap-1.5 text-sm text-purple-600 hover:text-purple-700 font-medium"
+          >
+            <Paintbrush size={14} />
+            Customize
+          </Link>
         </div>
         <ThemeSelector />
       </section>
