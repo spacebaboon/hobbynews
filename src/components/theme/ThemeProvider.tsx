@@ -6,6 +6,7 @@ import {
   useEffect,
   useState,
   useCallback,
+  useLayoutEffect,
 } from "react";
 
 export interface ThemeColors {
@@ -29,6 +30,7 @@ interface ThemeContextValue {
   theme: Theme | null;
   themes: Theme[];
   setTheme: (theme: Theme) => void;
+  applyThemeColors: (colors: ThemeColors) => void;
   isLoading: boolean;
 }
 
@@ -51,6 +53,7 @@ const defaultTheme: Theme = {
 };
 
 function applyThemeToDOM(theme: ThemeColors) {
+  if (typeof document === "undefined") return;
   const root = document.documentElement;
   root.style.setProperty("--color-primary", theme.primaryColor);
   root.style.setProperty("--color-secondary", theme.secondaryColor);
@@ -80,10 +83,24 @@ function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
     : null;
 }
 
+function getStoredTheme(): Theme | null {
+  if (typeof window === "undefined") return null;
+  const saved = localStorage.getItem(THEME_STORAGE_KEY);
+  if (saved) {
+    try {
+      return JSON.parse(saved);
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme | null>(null);
   const [themes, setThemes] = useState<Theme[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   // Load themes from API
   useEffect(() => {
@@ -97,21 +114,18 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       .catch(console.error);
   }, []);
 
-  // Load saved theme from localStorage on mount
-  useEffect(() => {
-    const saved = localStorage.getItem(THEME_STORAGE_KEY);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setThemeState(parsed);
-        applyThemeToDOM(parsed);
-      } catch {
-        applyThemeToDOM(defaultTheme);
-      }
+  // Apply theme immediately on mount to avoid flash
+  useLayoutEffect(() => {
+    const stored = getStoredTheme();
+    if (stored) {
+      setThemeState(stored);
+      applyThemeToDOM(stored);
     } else {
+      setThemeState(defaultTheme);
       applyThemeToDOM(defaultTheme);
     }
     setIsLoading(false);
+    setMounted(true);
   }, []);
 
   const setTheme = useCallback((newTheme: Theme) => {
@@ -120,9 +134,19 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem(THEME_STORAGE_KEY, JSON.stringify(newTheme));
   }, []);
 
+  // For live preview without saving
+  const applyThemeColors = useCallback((colors: ThemeColors) => {
+    applyThemeToDOM(colors);
+  }, []);
+
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <ThemeContext.Provider
-      value={{ theme: theme ?? defaultTheme, themes, setTheme, isLoading }}
+      value={{ theme: theme ?? defaultTheme, themes, setTheme, applyThemeColors, isLoading }}
     >
       {children}
     </ThemeContext.Provider>
