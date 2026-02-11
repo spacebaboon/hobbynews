@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Trash2, Plus, Rss, FolderOpen, X } from "lucide-react";
+import { Trash2, Plus, Rss, FolderOpen, X, Palette } from "lucide-react";
+import { ThemeSelector } from "@/components/theme/ThemeSelector";
 
 interface Subscription {
   id: string;
@@ -315,6 +316,15 @@ export function SettingsClient({
             <p className="text-sm text-red-500">{feedError}</p>
           )}
         </div>
+      </section>
+
+      {/* Theme */}
+      <section className="bg-white rounded-2xl p-6 shadow-sm">
+        <div className="flex items-center gap-2 mb-4">
+          <Palette size={20} className="text-purple-500" />
+          <h2 className="text-lg font-bold text-gray-900">Theme</h2>
+        </div>
+        <ThemeSelector />
       </section>
     </>
   );
