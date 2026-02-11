@@ -27,7 +27,26 @@ model UserPreferences {
   userId      String  @unique
   user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   themeId     String?
+  theme       Theme?  @relation(fields: [themeId], references: [id])
   customTheme Json?
+}
+
+model Theme {
+  id               String  @id @default(uuid())
+  name             String  @unique
+  slug             String  @unique
+  isDefault        Boolean @default(false)
+  isPublic         Boolean @default(true)
+  primaryColor     String
+  secondaryColor   String
+  backgroundColor  String
+  surfaceColor     String
+  textColor        String
+  textMutedColor   String
+  accentColor      String
+  borderColor      String
+
+  userPreferences UserPreferences[]
 }
 
 model FeedSource {
